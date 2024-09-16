@@ -1,2 +1,2 @@
-# pomodoro
-a productivity timer written in svelte
+# writeaway
+word processor focused on productivity
