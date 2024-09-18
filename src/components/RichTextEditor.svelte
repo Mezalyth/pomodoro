@@ -1,45 +1,29 @@
 <script>
-  import { onMount } from 'svelte';
-  import 'quill/dist/quill.snow.css'; // Ensure Quill's CSS is loaded
+  export let content = '';
 
-  let editor;
-  export let content = '';  // Export content to be bound to parent
-
-  function updateContent() {
-    content = editor.root.innerHTML; // Quill's output as HTML
-    console.log('Updated Content:', content);  // Log the updated content
-  }
-
-  onMount(async () => {
-    if (typeof window !== 'undefined' && !editor) { // Check if Quill has already been initialized
-      const Quill = (await import('quill')).default;
-
-      // Initialize Quill editor only once
-      editor = new Quill('#editor', {
-        theme: 'snow',  // Apply the Snow theme
-        modules: {
-          toolbar: [
-            [{ 'header': [1, 2, false] }],
-            ['bold', 'italic', 'underline'],
-            ['link', 'blockquote', 'code-block'],
-            [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-            ['clean'] // Removes formatting
-          ]
-        }
-      });
-
-      editor.on('text-change', updateContent);  // Update content on text-change
-    }
-  });
+  // No need for the handleInput function since bind:value handles two-way binding
 </script>
 
+<textarea
+  bind:value={content}
+  rows="15"
+  cols="80"
+  placeholder="Start writing..."
+></textarea>
+
 <style>
-  #editor {
-    height: 300px;
-    background: white;
+  textarea {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    box-sizing: border-box;
     border: 1px solid #ccc;
+    border-radius: 5px;
+    resize: vertical;
+  }
+
+  textarea:focus {
+    outline: none;
+    border-color: #007bff;
   }
 </style>
-
-<!-- Quill Editor HTML Element -->
-<div id="editor"></div>

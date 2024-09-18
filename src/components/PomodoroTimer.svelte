@@ -1,96 +1,149 @@
 <script>
-    import { onMount } from 'svelte';  // Import the onMount lifecycle function
+	import { onMount, onDestroy } from 'svelte';
   
-    let time = 1500; // Default to 25 minutes (1500 seconds)
-    let timer;
-    let isRunning = false;
-    let mode = "Work"; // Default to Work mode
-    let audio; // Audio reference
+	let time = 1500;         // Default time in seconds (25 minutes)
+	let timer;               // Reference to the interval
+	let isRunning = false;   // Timer running state
+	let mode = 'Work';       // Current mode
+	let audio;               // Audio element for alarm
   
-    // Durations in seconds
-    const WORK_DURATION = 1500; // 25 minutes
-    const SHORT_BREAK_DURATION = 300; // 5 minutes
-    const LONG_BREAK_DURATION = 900; // 15 minutes
+	// Durations for different modes
+	const WORK_DURATION = 1500;          // 25 minutes
+	const SHORT_BREAK_DURATION = 300;    // 5 minutes
+	const LONG_BREAK_DURATION = 900;     // 15 minutes
   
-    // Start the timer
-    function startTimer() {
-      if (!isRunning) {
-        isRunning = true;
-        timer = setInterval(() => {
-          if (time > 0) {
-            time -= 1;
-          } else {
-            playSound(); // Play sound when time reaches 0
-            stopTimer(); // Stop the timer when time is up
-          }
-        }, 1000);
-      }
-    }
+	// Start the timer
+	function startTimer() {
+	  if (!isRunning) {
+		isRunning = true;
+		clearInterval(timer);
+		timer = setInterval(() => {
+		  if (time > 0) {
+			time -= 1;
+		  } else {
+			playSound();
+			stopTimer();
+		  }
+		}, 1000);
+	  }
+	}
   
-    // Pause the timer
-    function pauseTimer() {
-      isRunning = false;
-      clearInterval(timer);
-    }
+	// Pause the timer
+	function pauseTimer() {
+	  isRunning = false;
+	  clearInterval(timer);
+	}
   
-    // Stop the timer completely when time is up
-    function stopTimer() {
-      isRunning = false;
-      clearInterval(timer);
-    }
+	// Stop the timer completely
+	function stopTimer() {
+	  isRunning = false;
+	  clearInterval(timer);
+	}
   
-    // Reset the timer (and stop it)
-    function resetTimer() {
-      pauseTimer();
-      setMode(mode); // Reset to the current mode's time
-    }
+	// Reset the timer
+	function resetTimer() {
+	  pauseTimer();
+	  setMode(mode);
+	}
   
-    // Manually set the mode (Work, Short Break, or Long Break)
-    function setMode(newMode) {
-      mode = newMode;
-      if (mode === "Work") {
-        time = WORK_DURATION;
-      } else if (mode === "Short Break") {
-        time = SHORT_BREAK_DURATION;
-      } else if (mode === "Long Break") {
-        time = LONG_BREAK_DURATION;
-      }
-    }
+	// Set the mode and time
+	function setMode(newMode) {
+	  pauseTimer();
+	  mode = newMode;
+	  if (mode === 'Work') {
+		time = WORK_DURATION;
+	  } else if (mode === 'Short Break') {
+		time = SHORT_BREAK_DURATION;
+	  } else if (mode === 'Long Break') {
+		time = LONG_BREAK_DURATION;
+	  }
+	}
   
-    // Format time as mm:ss
-    function formatTime(seconds) {
-      const minutes = Math.floor(seconds / 60);
-      const secs = seconds % 60;
-      return `${minutes}:${secs < 10 ? "0" : ""}${secs}`;
-    }
+	// Play the alarm sound
+	function playSound() {
+	  if (audio) {
+		audio.play().catch(error => {
+		  console.error('Audio playback failed:', error);
+		});
+	  }
+	}
   
-    // Play the chimes sound
-    function playSound() {
-      if (audio) {
-        audio.play();
-      }
-    }
+	// Load the alarm sound
+	onMount(() => {
+	  audio = new Audio('/chimes.mp3'); // Ensure this path is correct
+	  audio.addEventListener('error', () => {
+		console.error('Failed to load audio file.');
+	  });
+	});
   
-    // Initialize the audio when the component mounts
-    onMount(() => {
-      audio = new Audio('/chimes.mp3'); // Load the chimes audio from the static folder
-    });
+	// Clean up interval on component destroy
+	onDestroy(() => {
+	  clearInterval(timer);
+	});
+  
+	// Format time as mm:ss
+	function formatTime(seconds) {
+	  const minutes = Math.floor(seconds / 60);
+	  const secs = seconds % 60;
+	  const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+	  const formattedSeconds = secs < 10 ? `0${secs}` : secs;
+	  return `${formattedMinutes}:${formattedSeconds}`;
+	}
   </script>
   
-  <div>
-    <h3>{mode} Time</h3>
-    <p>{formatTime(time)}</p>
+  <div class="pomodoro-timer">
+	<h3>{mode} Time</h3>
+	<div class="timer-display">{formatTime(time)}</div>
   
-    <!-- Timer Controls -->
-    <button on:click={startTimer} disabled={isRunning}>Start</button>
-    <button on:click={pauseTimer} disabled={!isRunning || time === 0}>Pause</button>
-    <button on:click={resetTimer}>Reset</button>
+	<!-- Timer Controls -->
+	<div class="timer-controls">
+	  <button on:click={startTimer} disabled={isRunning} aria-label="Start Timer">Start</button>
+	  <button on:click={pauseTimer} disabled={!isRunning} aria-label="Pause Timer">Pause</button>
+	  <button on:click={resetTimer} aria-label="Reset Timer">Reset</button>
+	</div>
   
-    <!-- Manual Mode Setters -->
-    <div>
-      <button on:click={() => setMode("Work")}>Pomodoro (Work)</button>
-      <button on:click={() => setMode("Short Break")}>Short Break</button>
-      <button on:click={() => setMode("Long Break")}>Long Break</button>
-    </div>
+	<!-- Mode Change Buttons -->
+	<div class="mode-buttons">
+	  <button on:click={() => setMode('Work')} class:active-mode={mode === 'Work'}>Pomodoro (Work)</button>
+	  <button on:click={() => setMode('Short Break')} class:active-mode={mode === 'Short Break'}>Short Break</button>
+	  <button on:click={() => setMode('Long Break')} class:active-mode={mode === 'Long Break'}>Long Break</button>
+	</div>
   </div>
+  
+  <style>
+	.pomodoro-timer {
+	  text-align: center;
+	}
+  
+	.timer-display {
+	  font-size: 3rem;
+	  margin-bottom: 1rem;
+	}
+  
+	.timer-controls button,
+	.mode-buttons button {
+	  padding: 8px 12px;
+	  font-size: 1rem;
+	  margin: 5px;
+	  cursor: pointer;
+	  border: 1px solid #333;
+	  background-color: #fff;
+	  border-radius: 5px;
+	}
+  
+	.timer-controls button:disabled {
+	  opacity: 0.5;
+	  cursor: not-allowed;
+	}
+  
+	.timer-controls button:hover:not(:disabled),
+	.mode-buttons button:hover {
+	  background-color: #f0f0f0;
+	}
+  
+	.active-mode {
+	  background-color: #007bff;
+	  color: white;
+	}
+  </style>
   
