@@ -1,8 +1,8 @@
 <script>
 	export let wordCount = 0;
-	let goal = 50000;            // Default word goal
-	let showGoalInput = false;   // Show or hide the goal input modal
-	let newGoalValue = goal;     // Temporary storage for new goal input
+	let goal = 50000;
+	let showGoalInput = false;
+	let newGoalValue = goal;
   
 	function openGoalInput() {
 	  newGoalValue = goal;
@@ -19,9 +19,18 @@
 	  }
 	}
   
-	// Calculate the percentage of the goal that has been completed
 	$: progress = goal > 0 ? (wordCount / goal) * 100 : 0;
+  
+	function handleKeydown(e) {
+	  // Only handle the keydown event if the modal is open
+	  if (showGoalInput && e.key === 'Escape') {
+		showGoalInput = false;
+	  }
+	}
   </script>
+  
+  <!-- Move svelte:window to the top level -->
+  <svelte:window on:keydown={handleKeydown} />
   
   <div class="progress-tracker">
 	<h3>Word Goal Progress</h3>
@@ -38,13 +47,23 @@
 	<button on:click={openGoalInput}>Change Goal</button>
   
 	{#if showGoalInput}
+	  <!-- Modal Overlay -->
 	  <div
 		class="modal-overlay"
 		role="dialog"
 		aria-modal="true"
-		on:click={() => (showGoalInput = false)}
 	  >
+		<!-- Modal Content -->
 		<div class="modal" on:click|stopPropagation>
+		  <!-- Close Button -->
+		  <button
+			class="close-button"
+			on:click={() => (showGoalInput = false)}
+			aria-label="Close modal"
+		  >
+			&times;
+		  </button>
+		  <!-- Modal Form -->
 		  <h4>Set New Word Goal</h4>
 		  <label for="goalInput">New Goal:</label>
 		  <input
@@ -63,6 +82,7 @@
   </div>
   
   <style>
+	/* Your existing styles */
 	.progress-tracker {
 	  margin-top: 20px;
 	}
@@ -88,10 +108,25 @@
 	}
   
 	.modal {
+	  position: relative;
 	  background: #fff;
 	  padding: 20px;
 	  border-radius: 5px;
 	  width: 300px;
+	}
+  
+	.close-button {
+	  position: absolute;
+	  top: 10px;
+	  right: 10px;
+	  font-size: 1.5rem;
+	  background: none;
+	  border: none;
+	  cursor: pointer;
+	}
+  
+	.close-button:hover {
+	  color: red;
 	}
   
 	.modal h4 {
