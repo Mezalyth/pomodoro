@@ -47,16 +47,16 @@
 	<section class="pomodoro-section">
 	  <PomodoroTimer />
 	</section>
+
+	<!-- Progress Tracker Section -->
+	<section class="progress-tracker-section">
+		<!-- Word Goal Progress -->
+		<ProgressTracker {wordCount} />
+	  </section>
   
 	<!-- Rich Text Editor -->
 	<section class="editor-section">
 	  <RichTextEditor bind:content />
-	</section>
-  
-	<!-- Progress Tracker Section -->
-	<section class="progress-tracker-section">
-	  <!-- Word Goal Progress -->
-	  <ProgressTracker {wordCount} />
 	</section>
   </main>
   
