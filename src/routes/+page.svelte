@@ -41,7 +41,7 @@
   </script>
   
   <main>
-	<h1>WriteAway - Rich Text Editor</h1>
+	<h1>WriteAway</h1>
   
 	<!-- Pomodoro Timer -->
 	<section class="pomodoro-section">
