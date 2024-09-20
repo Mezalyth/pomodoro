@@ -2,7 +2,7 @@
 	import RichTextEditor from '../components/RichTextEditor.svelte';
 	import PomodoroTimer from '../components/PomodoroTimer.svelte';
 	import ProgressTracker from '../components/ProgressTracker.svelte';
-	import Notes from '../components/Notes.svelte';  // Import the Notes component
+	import Notes from '../components/Notes.svelte';  
 	import { onMount } from 'svelte';
 	import { browser } from '$app/environment';
 	
@@ -68,7 +68,6 @@
   
   <style>
 	main {
-	  padding: 20px;
 	  font-family: sans-serif;
 	  max-width: 800px;
 	  margin: 0 auto;
@@ -94,7 +93,6 @@
   
 	.progress-tracker-section {
 	  border-top: 1px solid #ddd;
-	  padding-top: 20px;
 	}
   
 	.notes-section {
