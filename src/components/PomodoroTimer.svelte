@@ -1,5 +1,5 @@
 <script>
-	import { onMount, onDestroy } from 'svelte';
+	import { onMount } from 'svelte';
   
 	let time = 1500; // Default time in seconds (25 minutes)
 	let timer; // Reference to the interval
@@ -9,12 +9,29 @@
 	let audio; // Audio element for alarm
 	let workSessionsCompleted = 0; // Number of completed work sessions
   
-	// Durations for different modes
 	const WORK_DURATION = 1500; // 25 minutes
 	const SHORT_BREAK_DURATION = 300; // 5 minutes
 	const LONG_BREAK_DURATION = 900; // 15 minutes
   
-	// Start the timer
+	// Wrap document-dependent logic inside onMount to avoid SSR issues
+	onMount(() => {
+	  document.addEventListener('click', handleClickOutside);
+  
+	  // Clean up event listener on component destroy
+	  return () => {
+		document.removeEventListener('click', handleClickOutside);
+	  };
+	});
+  
+	// Detect click outside the tray and close it
+	function handleClickOutside(event) {
+	  const tray = document.querySelector('.pomodoro-container');
+	  if (tray && !tray.contains(event.target) && isExpanded) {
+		isExpanded = false;
+	  }
+	}
+  
+	// Timer functions
 	function startTimer() {
 	  if (!isRunning) {
 		isRunning = true;
@@ -31,25 +48,21 @@
 	  }
 	}
   
-	// Pause the timer
 	function pauseTimer() {
 	  isRunning = false;
 	  clearInterval(timer);
 	}
   
-	// Stop the timer completely
 	function stopTimer() {
 	  isRunning = false;
 	  clearInterval(timer);
 	}
   
-	// Reset the timer
 	function resetTimer() {
 	  pauseTimer();
 	  setMode(mode); // Reset to the current mode
 	}
   
-	// Switch to the next session automatically
 	function switchToNextSession() {
 	  if (mode === 'Work') {
 		workSessionsCompleted += 1; // Track how many work sessions have been completed
@@ -63,7 +76,6 @@
 	  }
 	}
   
-	// Set the mode and time
 	function setMode(newMode) {
 	  pauseTimer();
 	  mode = newMode;
@@ -76,7 +88,7 @@
 	  }
 	}
   
-	// Play the alarm sound
+	// Play alarm sound
 	function playSound() {
 	  if (audio) {
 		audio.currentTime = 0; // Reset audio to the start before playing
@@ -86,29 +98,12 @@
 	  }
 	}
   
-	// Detect click outside the tray and close it
-	function handleClickOutside(event) {
-	  const tray = document.querySelector('.pomodoro-container');
-	  if (tray && !tray.contains(event.target) && isExpanded) {
-		isExpanded = false;
-	  }
-	}
-  
-	// Load the alarm sound
+	// Load the alarm sound on mount
 	onMount(() => {
 	  audio = new Audio('/chimes.mp3'); // Ensure this path is correct
 	  audio.addEventListener('error', () => {
 		console.error('Failed to load audio file.');
 	  });
-  
-	  // Add event listener to detect clicks outside the tray
-	  document.addEventListener('click', handleClickOutside);
-	});
-  
-	// Clean up interval and event listener on component destroy
-	onDestroy(() => {
-	  clearInterval(timer);
-	  document.removeEventListener('click', handleClickOutside); // Clean up
 	});
   
 	// Format time as mm:ss
@@ -222,13 +217,14 @@
   
 	/* Active mode button */
 	.mode-buttons button.active-mode {
-    background-color: #007bff;
-    color: #fff;
-    border-color: #007bff;
-  }
-
-  .mode-buttons button.active-mode:hover {
-    background-color: #0056b3;
-    border-color: #0056b3;
-  }
-</style>
+	  background-color: #007bff;
+	  color: #fff;
+	  border-color: #007bff;
+	}
+  
+	.mode-buttons button.active-mode:hover {
+	  background-color: #0056b3;
+	  border-color: #0056b3;
+	}
+  </style>
+  
