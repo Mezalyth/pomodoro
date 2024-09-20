@@ -74,15 +74,10 @@
 	}
   
 	h1 {
-	  font-size: 2.5rem;
-	  margin-bottom: 20px;
+	  font-size: 1rem;
 	  text-align: center;
 	}
-  
-	section {
-	  margin-bottom: 30px;
-	}
-  
+
 	.editor-section {
 	  margin-top: 20px;
 	}
