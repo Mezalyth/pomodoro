@@ -36,7 +36,7 @@
   
 	// Peek the tray when the mouse is near the right edge
 	function handleMouseMove(event) {
-	  const threshold = window.innerWidth - 50; // Distance from the right edge for peek
+	  const threshold = window.innerWidth - 200; // Distance from the right edge for peek
 	  if (event.clientX > threshold && !isExpanded) {
 		isHovered = true;
 	  } else {
@@ -196,8 +196,8 @@
 	.pomodoro-container {
 	  position: fixed;
 	  top: 0;
-	  right: -300px; /* Hidden by default */
-	  width: 300px;
+	  right: -320px; /* Hidden by default */
+	  width: 280px;
 	  height: 100%;
 	  background-color: #fff;
 	  border-left: 2px solid #ddd;

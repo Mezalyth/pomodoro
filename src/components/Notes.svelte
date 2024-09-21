@@ -29,7 +29,7 @@
   
     // Peek the tray when the mouse is near the left edge
     function handleMouseMove(event) {
-      const threshold = 50; // Distance from the edge for peek
+      const threshold = 200; // Distance from the edge for peek
       if (event.clientX < threshold && !isExpanded) {
         isHovered = true;
       } else {
@@ -133,7 +133,7 @@
       position: fixed;
       top: 0;
       left: -320px; /* Hidden by default */
-      width: 320px;
+      width: 280px;
       height: 100%;
       background-color: #fff;
       border-right: 2px solid #ddd;
@@ -149,7 +149,7 @@
     }
   
     .notes-container.peek {
-      left: -290px; /* Partially peek out */
+      left: -270px; /* Partially peek out */
     }
   
     .notes-content {
@@ -282,7 +282,7 @@
   
     /* Button moves with the tray */
     .expanded-button {
-      left: 360px; /* Moves out with the tray when expanded */
+      left: 340px; /* Moves out with the tray when expanded */
     }
   
     .toggle-button:hover {
