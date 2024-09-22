@@ -1,3 +1,4 @@
+<!-- ProgressTracker.svelte -->
 <script>
 	export let wordCount = 0;
 	let goal = 50000; // Default word goal
@@ -8,62 +9,60 @@
   
 	// Format progress to have at most two decimal places
 	$: formattedProgress = progress.toFixed(2);
-  </script>
-  
-  <div class="progress-tracker">
+</script>
+
+<div class="progress-tracker">
 	<h3>Word Goal Progress</h3>
-	<p>{wordCount}/{goal} words ({formattedProgress}%)</p>
+	<!-- Word count display combined with goal input -->
+	<p>
+		{wordCount} / 
+		<input
+			id="goalInput"
+			type="number"
+			min="1"
+			bind:value={goal}
+			class="goal-input"
+			aria-label="Set Word Goal"
+		/>
+		words ({formattedProgress}%)
+	</p>
   
 	<!-- Progress Bar -->
 	<progress
-	  value={Math.min(progress, 100)}
-	  max="100"
-	  aria-label="Progress towards word goal"
+		value={Math.min(progress, 100)}
+		max="100"
+		aria-label="Progress towards word goal"
 	></progress>
-  
-	<!-- Inline Goal Setter -->
-	<div class="goal-setter">
-	  <label for="goalInput">Set Word Goal:</label>
-	  <input
-		id="goalInput"
-		type="number"
-		min="1"
-		bind:value={goal}
-	  />
-	</div>
-  </div>
-  
-  <style>
+</div>
+
+<style>
 	.progress-tracker {
-	  margin-top: 20px;
+		margin-top: 20px;
 	}
-  
+
 	.progress-tracker h3 {
-	  margin-bottom: 10px;
+		margin-bottom: 10px;
 	}
-  
+
 	.progress-tracker p {
-	  margin-bottom: 10px;
+		margin-bottom: 10px;
 	}
-  
+
 	progress {
-	  width: 100%;
-	  height: 20px;
-	  margin-bottom: 10px;
+		width: 100%;
+		height: 20px;
+		margin-bottom: 10px;
 	}
-  
-	.goal-setter {
-	  margin-top: 10px;
+
+	.goal-input {
+		width: 80px;
+		padding: 5px;
+		margin-left: 5px;
+		box-sizing: border-box;
+		display: inline-block;
+		font-size: 1rem;
+		text-align: right;
+		border: 1px solid #ccc;
+		border-radius: 5px;
 	}
-  
-	.goal-setter label {
-	  margin-right: 10px;
-	}
-  
-	.goal-setter input {
-	  width: 100px;
-	  padding: 5px;
-	  box-sizing: border-box;
-	}
-  </style>
-  
+</style>
