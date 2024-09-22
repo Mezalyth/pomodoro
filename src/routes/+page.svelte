@@ -4,16 +4,17 @@
 	import PomodoroTimer from '../components/PomodoroTimer.svelte';
 	import ProgressTracker from '../components/ProgressTracker.svelte';
 	import Notes from '../components/Notes.svelte';
-	import { browser } from '$app/environment';  // Import the `browser` variable
+	import { browser } from '$app/environment'; 
+	import '../app.css';
   
 	let content = '';  // Bound to the rich text editor's content
 	let wordCount = 0;  // Total word count
   
 	// Function to get the word count from HTML content
 	function getWordCount(htmlContent) {
-	  if (!htmlContent || !browser) return 0;  // Ensure this only runs in the browser
+	  if (!htmlContent || !browser) return 0;  
   
-	  const tempDiv = document.createElement('div');  // Only runs in the browser
+	  const tempDiv = document.createElement('div'); 
 	  tempDiv.innerHTML = htmlContent;
 	  const textContent = tempDiv.textContent || tempDiv.innerText || '';
   
@@ -21,15 +22,13 @@
 	}
   
 	// Reactive word count update
-	$: if (browser) {  // Ensure this only runs client-side
+	$: if (browser) {  
 	  wordCount = getWordCount(content);
 	}
   
-	// Function to copy content to clipboard with formatting
 	async function copyToClipboard() {
 	  if (browser && content) {
 		try {
-		  // Create a ClipboardItem with 'text/html' type
 		  const clipboardItem = new ClipboardItem({
 			'text/html': new Blob([content], { type: 'text/html' }),
 		  });
@@ -78,29 +77,20 @@
 	  font-family: sans-serif;
 	  max-width: 800px;
 	  margin: 0 auto;
-	  padding: 20px;
 	}
   
 	h1 {
-	  font-size: 2rem;
+	  font-size: 0.8rem;
 	  text-align: center;
-	  margin-bottom: 40px;
-	}
-  
-	.editor-section {
-	  margin-top: 20px;
 	}
   
 	.pomodoro-section,
 	.notes-section {
 	  text-align: center;
-	  margin-bottom: 20px;
 	}
   
 	.progress-tracker-section {
 	  border-top: 1px solid #ddd;
-	  padding-top: 20px;
-	  margin-top: 20px;
 	}
   
 	.clipboard-section {
