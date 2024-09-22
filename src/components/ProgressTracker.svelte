@@ -1,6 +1,6 @@
 <script>
 	export let wordCount = 0;
-	let goal = 50000; // Default word goal
+	let goal = 1667; // Default word goal
 	let progress = 0;
   
 	// Compute progress percentage
@@ -12,7 +12,7 @@
 
 <div class="progress-tracker">
 	<div class="progress-header">
-		<h3>Word Goal Progress</h3>
+		<h3>Sprint Progress</h3>
 		<!-- Word count display combined with goal input, right-aligned -->
 		<p>
 			{wordCount}/
