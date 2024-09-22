@@ -1,4 +1,3 @@
-<!-- ProgressTracker.svelte -->
 <script>
 	export let wordCount = 0;
 	let goal = 50000; // Default word goal
@@ -12,20 +11,22 @@
 </script>
 
 <div class="progress-tracker">
-	<h3>Word Goal Progress</h3>
-	<!-- Word count display combined with goal input -->
-	<p>
-		{wordCount} / 
-		<input
-			id="goalInput"
-			type="number"
-			min="1"
-			bind:value={goal}
-			class="goal-input"
-			aria-label="Set Word Goal"
-		/>
-		words ({formattedProgress}%)
-	</p>
+	<div class="progress-header">
+		<h3>Word Goal Progress</h3>
+		<!-- Word count display combined with goal input, right-aligned -->
+		<p>
+			{wordCount}/
+			<input
+				id="goalInput"
+				type="number"
+				min="1"
+				bind:value={goal}
+				class="goal-input"
+				aria-label="Set Word Goal"
+			/>
+			words ({formattedProgress}%)
+		</p>
+	</div>
   
 	<!-- Progress Bar -->
 	<progress
@@ -40,18 +41,24 @@
 		margin-top: 20px;
 	}
 
+	.progress-header {
+		display: flex;
+		justify-content: space-between; /* Pushes h3 and p to opposite sides */
+		align-items: center;
+	}
+
 	.progress-tracker h3 {
-		margin-bottom: 10px;
+		margin: 0;
 	}
 
 	.progress-tracker p {
-		margin-bottom: 10px;
+		margin: 0;
 	}
 
 	progress {
 		width: 100%;
 		height: 20px;
-		margin-bottom: 10px;
+		margin-top: 10px;
 	}
 
 	.goal-input {
