@@ -226,8 +226,7 @@
     left: -320px; /* Hidden by default */
     width: 280px;
     height: 100%;
-    background-color: #fff;
-    border-right: 2px solid #ddd;
+    background: #f1f1f1;
     box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
     transition: left 0.3s ease;
     z-index: 999; /* Ensure it appears above other elements */
@@ -291,7 +290,7 @@
     padding: 10px 20px;
     font-size: 1rem;
     border: none;
-    background-color: #28a745;
+    background-color: #1e6a52;
     color: white;
     cursor: pointer;
     border-radius: 0 5px 5px 0;
@@ -299,7 +298,7 @@
   }
 
   .add-todo button:hover {
-    background-color: #218838;
+    background-color: #227c5f;
   }
 
   .todo-list {
@@ -345,7 +344,7 @@
     padding: 10px 20px;
     font-size: 1rem;
     border: none;
-    background-color: #dc3545;
+    background-color: #7c2522;
     color: white;
     cursor: pointer;
     border-radius: 5px;
@@ -353,7 +352,7 @@
   }
 
   .clear-completed:hover {
-    background-color: #c82333;
+    background-color: #942c29;
   }
 
   /* Toggle Button Styles */
@@ -361,7 +360,7 @@
     position: fixed;
     top: 30%;
     left: 40px; /* Make it visible even when the tray is hidden */
-    background-color: #007bff;
+    background-color: #37699e;
     color: white;
     border: none;
     padding: 16px 50px;
@@ -387,6 +386,7 @@
     .notes-container {
       width: 80%;
       left: -80%;
+      background: #f1f1f1;
     }
 
     .notes-container.expanded {

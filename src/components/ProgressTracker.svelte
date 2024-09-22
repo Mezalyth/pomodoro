@@ -71,5 +71,28 @@
 		text-align: right;
 		border: 1px solid #ccc;
 		border-radius: 5px;
+	}	
+
+	progress {
+	width: 100%;
+	height: 8px;
+	margin: 10px 0 10px 0;
+	appearance: none; /* Remove default styling */
 	}
+
+	progress::-webkit-progress-bar {
+		background-color: #f3f3f3; /* Background of the bar */
+		border-radius: 10px; /* Optional rounded corners */
+	}
+
+	progress::-webkit-progress-value {
+		background-color: #37699e; /* Progress fill color */
+		border-radius: 10px; /* Optional rounded corners */
+	}
+
+	progress::-moz-progress-bar {
+		background-color: #37699e; /* Progress fill color for Firefox */
+		border-radius: 10px; /* Optional rounded corners */
+	}
+
 </style>

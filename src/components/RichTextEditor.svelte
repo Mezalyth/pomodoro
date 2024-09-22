@@ -1,19 +1,18 @@
-<!-- RichTextEditor.svelte -->
 <script>
   import { onMount } from 'svelte';
   import { browser } from '$app/environment';
+  import { createEventDispatcher } from 'svelte';
 
   export let content = ''; // Bound to Quill editor content
   let quill;
   let editorDiv;
+  const dispatch = createEventDispatcher(); // Svelte event dispatcher
 
   onMount(async () => {
     if (browser) {
       try {
-        // Dynamically import Quill to ensure it only runs in the browser
         const Quill = (await import('quill')).default;
 
-        // Initialize Quill editor
         quill = new Quill(editorDiv, {
           theme: 'snow',
           modules: {
@@ -29,35 +28,42 @@
           },
         });
 
-        // Load content from localStorage when the page loads
         const savedContent = localStorage.getItem('quillContent');
         if (savedContent) {
           quill.clipboard.dangerouslyPasteHTML(savedContent);
-          content = savedContent; // Initialize bound content
+          content = savedContent;
         }
 
-        // Update content on text change and save to localStorage
         quill.on('text-change', () => {
-          content = quill.root.innerHTML; // Update the content variable
-          localStorage.setItem('quillContent', content); // Save to localStorage
+          content = quill.root.innerHTML;
+          localStorage.setItem('quillContent', content);
+          dispatch('typing', true); // Trigger typing event
         });
       } catch (error) {
         console.error('Error loading Quill:', error);
       }
     }
   });
+
+  function stopTyping() {
+    dispatch('typing', false); // Trigger typing stopped event
+  }
+
+  // Optionally, detect when user stops typing
+  let typingTimeout;
+  quill?.on('text-change', () => {
+    if (typingTimeout) clearTimeout(typingTimeout);
+    typingTimeout = setTimeout(stopTyping, 2000); // Stop typing after 2 seconds of inactivity
+  });
 </script>
 
-<!-- Editor Container -->
 <div bind:this={editorDiv}></div>
 
 <style global>
-  /* Import Quill's Snow theme CSS */
   @import 'quill/dist/quill.snow.css';
 
-  /* Set a minimum height for the editor */
   .ql-editor {
     min-height: 200px;
+    background: #f1f1f1;
   }
-
 </style>

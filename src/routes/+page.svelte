@@ -1,4 +1,3 @@
-<!-- +page.svelte -->
 <script>
 	import RichTextEditor from '../components/RichTextEditor.svelte';
 	import PomodoroTimer from '../components/PomodoroTimer.svelte';
@@ -9,7 +8,9 @@
   
 	let content = '';  // Bound to the rich text editor's content
 	let wordCount = 0;  // Total word count
-  
+	let typing = false; // Tracks whether the user is typing
+	let mouseMoveTimeout; // To control mouse move reset timing
+
 	// Function to get the word count from HTML content
 	function getWordCount(htmlContent) {
 	  if (!htmlContent || !browser) return 0;  
@@ -26,6 +27,36 @@
 	  wordCount = getWordCount(content);
 	}
   
+	// Function to handle typing state from RichTextEditor
+	function handleTyping(isTyping) {
+		typing = isTyping;
+	}
+
+	// Function to reset typing state on mouse move with a delay
+	function resetUI() {
+		if (mouseMoveTimeout) {
+			clearTimeout(mouseMoveTimeout); // Clear previous timeout
+		}
+		mouseMoveTimeout = setTimeout(() => {
+			if (typing) {
+				typing = false; // Reset the UI after a delay
+			}
+		}, 100); // 100ms delay before resetting typing
+	}
+
+	// Add event listener to detect mouse movement and reset UI
+	if (browser) {
+		window.addEventListener('mousemove', resetUI);
+	}
+
+	// Remove the event listener when component is destroyed
+	import { onDestroy } from 'svelte';
+	onDestroy(() => {
+		if (browser) {
+			window.removeEventListener('mousemove', resetUI);
+		}
+	});
+
 	async function copyToClipboard() {
 	  if (browser && content) {
 		try {
@@ -41,9 +72,10 @@
 		}
 	  }
 	}
-  </script>
-  
-  <main>
+</script>
+
+
+<main class:fade-out={typing}>
 	<h1>WriteAway</h1>
   
 	<!-- Notes Tray on the Left -->
@@ -63,16 +95,16 @@
   
 	<!-- Rich Text Editor -->
 	<section class="editor-section">
-	  <RichTextEditor bind:content />
+	  <RichTextEditor bind:content on:typing={handleTyping} />
 	</section>
   
 	<!-- Copy to Clipboard Button -->
 	<section class="clipboard-section">
 	  <button on:click={copyToClipboard}>Copy to Clipboard</button>
 	</section>
-  </main>
-  
-  <style>
+</main>
+
+<style>
 	main {
 	  font-family: sans-serif;
 	  max-width: 800px;
@@ -100,7 +132,7 @@
   
 	button {
 	  padding: 10px 20px;
-	  background-color: #4CAF50;
+	  background-color: #1e6a52;
 	  color: white;
 	  border: none;
 	  border-radius: 5px;
@@ -109,7 +141,12 @@
 	}
   
 	button:hover {
-	  background-color: #45a049;
+	  background-color: #227c5f;
 	}
-  </style>
-  
+
+	/* Fade-out effect for non-editor elements */
+	.fade-out > :not(.editor-section) {
+		opacity: 0.08;
+		transition: opacity 5s ease; /* This handles both fade-in and fade-out */
+	}
+</style>

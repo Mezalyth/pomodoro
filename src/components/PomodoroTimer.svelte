@@ -207,8 +207,7 @@
 	  right: -320px; /* Hidden by default */
 	  width: 280px;
 	  height: 100%;
-	  background-color: #fff;
-	  border-left: 2px solid #ddd;
+      background: #f1f1f1;
 	  box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
 	  transition: right 0.3s ease;
 	  z-index: 999;
@@ -254,9 +253,8 @@
 	}
 
 	.mode-buttons button.active-mode {
-	  background-color: #007bff;
+	  background-color: #37699e;
 	  color: white;
-	  border-color: #007bff;
 	}
 
 	.mode-buttons button:hover {
@@ -265,7 +263,6 @@
 
 	.mode-buttons button.active-mode:hover {
 	  background-color: #0056b3;
-	  border-color: #0056b3;
 	}
 
 	/* Timer Controls */
@@ -282,7 +279,7 @@
 	  font-size: 1.2rem;
 	  cursor: pointer;
 	  border: none;
-	  background-color: #007bff;
+	  background-color: #37699e;
 	  color: white;
 	  border-radius: 5px;
 	  display: inline-flex;
@@ -309,7 +306,7 @@
 	  position: fixed;
 	  top: 30%;
 	  right: 40px; /* Adjusted for right side */
-	  background-color: #007bff;
+	  background-color: #37699e;
 	  color: white;
 	  border: none;
 	  padding: 16px 50px;
