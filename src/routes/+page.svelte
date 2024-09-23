@@ -104,6 +104,12 @@
 	<section class="clipboard-section">
 		<button on:click={copyToClipboard}>Copy to Clipboard</button>
 	</section>
+
+	<!-- Credits -->
+	 <section>
+		<h2>Made with &lt;3 by @mezalyth / Anthony</h2>
+	</section>
+
 </main>
 
 <style>
@@ -115,6 +121,12 @@
 
 	h1 {
 		font-size: 0.8rem;
+		text-align: center;
+	}
+
+	h2 {
+		font-size: 0.6rem;
+		color:#a3a3a3;
 		text-align: center;
 	}
 
