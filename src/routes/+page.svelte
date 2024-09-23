@@ -107,7 +107,7 @@
 
 	<!-- Credits -->
 	 <section>
-		<h2>Made with &lt;3 by @mezalyth / Anthony</h2>
+		<h2>Made with &lt;3 by <a href="https://x.com/mezalyth" target="_blank">@mezalyth</a> / Anthony</h2>
 	</section>
 
 </main>
