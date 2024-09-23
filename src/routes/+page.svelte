@@ -164,4 +164,11 @@
 		opacity: 0.08;
 		transition: opacity 5s ease; /* This handles both fade-in and fade-out */
 	}
+
+	/* Media query for screens 600px and smaller */
+@media only screen and (max-width: 600px) {
+  .notes-section, .pomodoro-section {
+    display: none;
+  }
+}
 </style>

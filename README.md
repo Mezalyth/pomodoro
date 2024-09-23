@@ -1,5 +1,5 @@
 # WriteAway
-An sprint-focused app built for authors, writers, and anyone who needs to get the words out.
+A sprint-focused app built for authors, writers, and anyone who needs to get the words out.
 
 ## Features
 ### Rich Text Editing
